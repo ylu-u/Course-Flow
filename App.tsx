@@ -48,9 +48,10 @@ const Modal: React.FC<{
   };
 
   return (
-    <div className={`fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-4 bg-black/30 dark:bg-black/60 ${isClosing ? 'backdrop-animate-out' : 'backdrop-animate-in'}`} onClick={handleCloseTrigger}>
+    <div className={`fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-4 bg-slate-400/10 dark:bg-black/40 ${isClosing ? 'backdrop-animate-out' : 'backdrop-animate-in'}`} onClick={handleCloseTrigger}>
       <div 
         className={`glass-panel modal-glow-persistent w-full max-w-lg p-6 md:p-12 rounded-t-[2.5rem] md:rounded-[3.5rem] relative ${isClosing ? 'modal-animate-out' : 'modal-animate-in'} safe-bottom`}
+        style={{ backgroundColor: 'rgba(255, 255, 255, 0.4)' }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full mx-auto mb-6 md:hidden" />
@@ -72,7 +73,7 @@ const Modal: React.FC<{
             <div className="space-y-1 md:space-y-2">
               <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Course Name</label>
               <input 
-                className="w-full liquid-card bg-white/10 dark:bg-slate-900/40 p-4 rounded-xl md:rounded-2xl outline-none focus:ring-2 focus:ring-blue-200/50 dark:text-white"
+                className="w-full liquid-card bg-white/20 dark:bg-white/10 p-4 rounded-xl md:rounded-2xl outline-none focus:ring-2 focus:ring-blue-200/50 text-slate-800"
                 value={formData.name}
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
               />
@@ -80,7 +81,7 @@ const Modal: React.FC<{
             <div className="space-y-1 md:space-y-2">
               <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Instructor</label>
               <input 
-                className="w-full liquid-card bg-white/10 dark:bg-slate-900/40 p-4 rounded-xl md:rounded-2xl outline-none focus:ring-2 focus:ring-blue-200/50 dark:text-white"
+                className="w-full liquid-card bg-white/20 dark:bg-white/10 p-4 rounded-xl md:rounded-2xl outline-none focus:ring-2 focus:ring-blue-200/50 text-slate-800"
                 value={formData.instructor}
                 onChange={(e) => setFormData({...formData, instructor: e.target.value})}
               />
@@ -88,13 +89,13 @@ const Modal: React.FC<{
             <div className="flex gap-4 pt-4 md:pt-6">
               <button 
                 onClick={handleSave}
-                className="flex-1 bg-slate-800 dark:bg-slate-200 dark:text-slate-900 text-white py-4 rounded-xl md:rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase active:scale-95 transition-all"
+                className="flex-1 bg-slate-800 text-white py-4 rounded-xl md:rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase active:scale-95 transition-all"
               >
                 Save
               </button>
               <button 
                 onClick={() => setIsEditing(false)}
-                className="flex-1 bg-white/20 dark:bg-slate-800/40 text-slate-500 py-4 rounded-xl md:rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase active:scale-95 transition-all"
+                className="flex-1 bg-white/40 text-slate-500 py-4 rounded-xl md:rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase active:scale-95 transition-all"
               >
                 Cancel
               </button>
@@ -102,39 +103,39 @@ const Modal: React.FC<{
           </div>
         ) : (
           <>
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-800 dark:text-slate-100 mb-6 md:mb-8 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-800 mb-6 md:mb-8 leading-tight">
               {course.name}
             </h2>
             
             <div className="grid grid-cols-2 gap-y-6 md:gap-y-10 gap-x-4 md:gap-x-8 mb-8 md:mb-14">
               <div className="space-y-1">
-                <span className="text-[8px] md:text-[9px] font-black uppercase text-slate-500 dark:text-slate-500 tracking-widest block mb-1">Instructor</span>
-                <p className="font-bold text-slate-700 dark:text-slate-300 text-base md:text-lg truncate">{course.instructor}</p>
+                <span className="text-[8px] md:text-[9px] font-black uppercase text-slate-500 tracking-widest block mb-1">Instructor</span>
+                <p className="font-bold text-slate-700 text-base md:text-lg truncate">{course.instructor}</p>
               </div>
               <div className="space-y-1">
-                <span className="text-[8px] md:text-[9px] font-black uppercase text-slate-500 dark:text-slate-500 tracking-widest block mb-1">Location</span>
-                <p className="font-bold text-slate-700 dark:text-slate-300 text-base md:text-lg">{course.room}</p>
+                <span className="text-[8px] md:text-[9px] font-black uppercase text-slate-500 tracking-widest block mb-1">Location</span>
+                <p className="font-bold text-slate-700 text-base md:text-lg">{course.room}</p>
               </div>
               <div className="space-y-1">
-                <span className="text-[8px] md:text-[9px] font-black uppercase text-slate-500 dark:text-slate-500 tracking-widest block mb-1">Day</span>
-                <p className="font-bold text-slate-700 dark:text-slate-300 text-base md:text-lg">{course.day}</p>
+                <span className="text-[8px] md:text-[9px] font-black uppercase text-slate-500 tracking-widest block mb-1">Day</span>
+                <p className="font-bold text-slate-700 text-base md:text-lg">{course.day}</p>
               </div>
               <div className="space-y-1">
-                <span className="text-[8px] md:text-[9px] font-black uppercase text-slate-500 dark:text-slate-500 tracking-widest block mb-1">Schedule</span>
-                <p className="font-bold text-slate-700 dark:text-slate-300 text-base md:text-lg">{TIME_RANGES[course.timeSlot]}</p>
+                <span className="text-[8px] md:text-[9px] font-black uppercase text-slate-500 tracking-widest block mb-1">Schedule</span>
+                <p className="font-bold text-slate-700 text-base md:text-lg">{TIME_RANGES[course.timeSlot]}</p>
               </div>
             </div>
 
             <div className="flex flex-col gap-3 md:gap-4">
               <button 
                 onClick={() => setIsEditing(true)}
-                className="w-full bg-[#1A1F2B] dark:bg-white text-white dark:text-slate-900 py-5 md:py-6 rounded-xl md:rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase active:scale-95 transition-all shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                className="w-full bg-[#1A1F2B] text-white py-5 md:py-6 rounded-xl md:rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase active:scale-95 transition-all shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)]"
               >
                 Edit Entry
               </button>
               <button 
                 onClick={() => onRemove(course.id)}
-                className="w-full bg-rose-50/50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 py-5 md:py-6 rounded-xl md:rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase active:scale-95 transition-all border border-rose-100/50 dark:border-rose-900/30"
+                className="w-full bg-rose-50/50 text-rose-600 py-5 md:py-6 rounded-xl md:rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase active:scale-95 transition-all border border-rose-100/50"
               >
                 Remove
               </button>
@@ -180,9 +181,10 @@ const AddCourseModal: React.FC<{
   };
 
   return (
-    <div className={`fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-4 bg-black/30 dark:bg-black/60 ${isClosing ? 'backdrop-animate-out' : 'backdrop-animate-in'}`} onClick={handleCloseTrigger}>
+    <div className={`fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-4 bg-slate-400/10 dark:bg-black/40 ${isClosing ? 'backdrop-animate-out' : 'backdrop-animate-in'}`} onClick={handleCloseTrigger}>
       <div 
         className={`glass-panel modal-glow-persistent w-full max-w-xl p-6 md:p-12 rounded-t-[2.5rem] md:rounded-[3.5rem] relative overflow-y-auto max-h-[95vh] no-scrollbar ${isClosing ? 'modal-animate-out' : 'modal-animate-in'} safe-bottom`}
+        style={{ backgroundColor: 'rgba(255, 255, 255, 0.4)' }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full mx-auto mb-6 md:hidden" />
@@ -203,7 +205,7 @@ const AddCourseModal: React.FC<{
           <div className="space-y-1">
             <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Course Name</label>
             <input 
-              className="w-full liquid-card bg-white/10 dark:bg-slate-900/40 p-4 rounded-xl md:rounded-2xl outline-none dark:text-white"
+              className="w-full liquid-card bg-white/20 p-4 rounded-xl md:rounded-2xl outline-none text-slate-800"
               placeholder="e.g. Cognitive Psychology"
               value={formData.name}
               onChange={(e) => setFormData({...formData, name: e.target.value})}
@@ -213,7 +215,7 @@ const AddCourseModal: React.FC<{
             <div className="space-y-1">
               <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Instructor</label>
               <input 
-                className="w-full liquid-card bg-white/10 dark:bg-slate-900/40 p-4 rounded-xl md:rounded-2xl outline-none dark:text-white"
+                className="w-full liquid-card bg-white/20 p-4 rounded-xl md:rounded-2xl outline-none text-slate-800"
                 placeholder="Dr. Smith"
                 value={formData.instructor}
                 onChange={(e) => setFormData({...formData, instructor: e.target.value})}
@@ -222,7 +224,7 @@ const AddCourseModal: React.FC<{
             <div className="space-y-1">
               <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Room</label>
               <input 
-                className="w-full liquid-card bg-white/10 dark:bg-slate-900/40 p-4 rounded-xl md:rounded-2xl outline-none dark:text-white"
+                className="w-full liquid-card bg-white/20 p-4 rounded-xl md:rounded-2xl outline-none text-slate-800"
                 placeholder="101"
                 value={formData.room}
                 onChange={(e) => setFormData({...formData, room: e.target.value})}
@@ -234,7 +236,7 @@ const AddCourseModal: React.FC<{
             <div className="space-y-1">
               <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Day</label>
               <select 
-                className="w-full liquid-card bg-white/10 dark:bg-slate-800/60 p-4 rounded-xl md:rounded-2xl outline-none dark:text-white"
+                className="w-full liquid-card bg-white/20 p-4 rounded-xl md:rounded-2xl outline-none text-slate-800"
                 value={formData.day}
                 onChange={(e) => setFormData({...formData, day: e.target.value as Day})}
               >
@@ -244,7 +246,7 @@ const AddCourseModal: React.FC<{
             <div className="space-y-1">
               <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Slot</label>
               <select 
-                className="w-full liquid-card bg-white/10 dark:bg-slate-800/60 p-4 rounded-xl md:rounded-2xl outline-none dark:text-white"
+                className="w-full liquid-card bg-white/20 p-4 rounded-xl md:rounded-2xl outline-none text-slate-800"
                 value={formData.timeSlot}
                 onChange={(e) => setFormData({...formData, timeSlot: e.target.value as TimeSlot})}
               >
@@ -256,7 +258,7 @@ const AddCourseModal: React.FC<{
           <div className="pt-4 md:pt-6">
             <button 
               onClick={handleSave}
-              className="w-full bg-[#1A1F2B] dark:bg-white text-white dark:text-slate-900 py-5 md:py-6 rounded-xl md:rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase active:scale-95 transition-all shadow-lg"
+              className="w-full bg-[#1A1F2B] text-white py-5 md:py-6 rounded-xl md:rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase active:scale-95 transition-all shadow-lg"
             >
               Add to Schedule
             </button>
