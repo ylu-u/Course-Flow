@@ -25,7 +25,7 @@ export const INITIAL_COURSES: Course[] = [
     instructor: 'Dr. Sarah Chen',
     room: 'Lab 402',
     day: 'Monday',
-    timeSlot: '1st Period',
+    timeSlots: ['1st Period'],
     color: 'from-purple-400 to-blue-500',
     weeks: allWeeks
   },
@@ -35,7 +35,7 @@ export const INITIAL_COURSES: Course[] = [
     instructor: 'Prof. James Watt',
     room: 'Hall A',
     day: 'Tuesday',
-    timeSlot: '3rd Period',
+    timeSlots: ['3rd Period'],
     color: 'from-pink-400 to-rose-500',
     weeks: earlyWeeks
   },
@@ -45,7 +45,7 @@ export const INITIAL_COURSES: Course[] = [
     instructor: 'Elena Rodriguez',
     room: 'Room 101',
     day: 'Wednesday',
-    timeSlot: '2nd Period',
+    timeSlots: ['2nd Period'],
     color: 'from-cyan-400 to-blue-600',
     weeks: allWeeks
   },
@@ -55,7 +55,7 @@ export const INITIAL_COURSES: Course[] = [
     instructor: 'Mark Thompson',
     room: 'Secure Lab',
     day: 'Thursday',
-    timeSlot: '4th Period',
+    timeSlots: ['4th Period'],
     color: 'from-amber-400 to-orange-500',
     weeks: lateWeeks
   },
@@ -65,7 +65,7 @@ export const INITIAL_COURSES: Course[] = [
     instructor: 'Dr. Alan Turing',
     room: 'Physics 01',
     day: 'Friday',
-    timeSlot: '3rd Period',
+    timeSlots: ['3rd Period'],
     color: 'from-emerald-400 to-teal-600',
     weeks: earlyWeeks
   }

@@ -86,6 +86,17 @@ const Modal: React.FC<{
                 onChange={(e) => setFormData({...formData, instructor: e.target.value})}
               />
             </div>
+            {/* Simple Slots editing in Modal (comma separated for simplicity here) */}
+             <div className="space-y-1 md:space-y-2">
+              <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Day</label>
+              <select 
+                className="w-full liquid-card bg-white/20 p-4 rounded-xl md:rounded-2xl outline-none text-slate-800"
+                value={formData.day}
+                onChange={(e) => setFormData({...formData, day: e.target.value as Day})}
+              >
+                {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
+              </select>
+            </div>
             <div className="flex gap-4 pt-4 md:pt-6">
               <button 
                 onClick={handleSave}
@@ -122,7 +133,11 @@ const Modal: React.FC<{
               </div>
               <div className="space-y-1">
                 <span className="text-[8px] md:text-[9px] font-black uppercase text-slate-500 tracking-widest block mb-1">Schedule</span>
-                <p className="font-bold text-slate-700 text-base md:text-lg">{TIME_RANGES[course.timeSlot]}</p>
+                <div className="flex flex-wrap gap-1">
+                  {course.timeSlots.map(ts => (
+                    <span key={ts} className="text-[9px] font-bold text-slate-600 bg-white/30 px-2 py-0.5 rounded-full">{TIME_RANGES[ts]}</span>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -157,10 +172,28 @@ const AddCourseModal: React.FC<{
     instructor: '',
     room: '',
     day: 'Monday',
-    timeSlot: '1st Period',
+    timeSlots: ['1st Period'],
     color: 'from-blue-400 to-indigo-600',
     weeks: Array.from({ length: 18 }, (_, i) => i + 1)
   });
+
+  const toggleWeek = (week: number) => {
+    const currentWeeks = formData.weeks || [];
+    if (currentWeeks.includes(week)) {
+      setFormData({ ...formData, weeks: currentWeeks.filter(w => w !== week) });
+    } else {
+      setFormData({ ...formData, weeks: [...currentWeeks, week].sort((a, b) => a - b) });
+    }
+  };
+
+  const toggleSlot = (slot: TimeSlot) => {
+    const currentSlots = formData.timeSlots || [];
+    if (currentSlots.includes(slot)) {
+      setFormData({ ...formData, timeSlots: currentSlots.filter(s => s !== slot) });
+    } else {
+      setFormData({ ...formData, timeSlots: [...currentSlots, slot] });
+    }
+  };
 
   const handleCloseTrigger = () => {
     setIsClosing(true);
@@ -168,8 +201,8 @@ const AddCourseModal: React.FC<{
   };
 
   const handleSave = () => {
-    if (!formData.name || !formData.instructor) {
-      alert("Please fill in the course name and instructor.");
+    if (!formData.name || !formData.instructor || !formData.timeSlots?.length || !formData.weeks?.length) {
+      alert("Please fill in the course name, instructor, and select at least one week and period.");
       return;
     }
     const newCourse: Course = {
@@ -183,7 +216,7 @@ const AddCourseModal: React.FC<{
   return (
     <div className={`fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-4 bg-slate-400/10 dark:bg-black/40 ${isClosing ? 'backdrop-animate-out' : 'backdrop-animate-in'}`} onClick={handleCloseTrigger}>
       <div 
-        className={`glass-panel modal-glow-persistent w-full max-w-xl p-6 md:p-12 rounded-t-[2.5rem] md:rounded-[3.5rem] relative overflow-y-auto max-h-[95vh] no-scrollbar ${isClosing ? 'modal-animate-out' : 'modal-animate-in'} safe-bottom`}
+        className={`glass-panel modal-glow-persistent w-full max-w-2xl p-6 md:p-12 rounded-t-[2.5rem] md:rounded-[3.5rem] relative overflow-y-auto max-h-[95vh] no-scrollbar ${isClosing ? 'modal-animate-out' : 'modal-animate-in'} safe-bottom`}
         style={{ backgroundColor: 'rgba(255, 255, 255, 0.4)' }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -211,6 +244,7 @@ const AddCourseModal: React.FC<{
               onChange={(e) => setFormData({...formData, name: e.target.value})}
             />
           </div>
+          
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
               <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Instructor</label>
@@ -232,26 +266,62 @@ const AddCourseModal: React.FC<{
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Day</label>
-              <select 
-                className="w-full liquid-card bg-white/20 p-4 rounded-xl md:rounded-2xl outline-none text-slate-800"
-                value={formData.day}
-                onChange={(e) => setFormData({...formData, day: e.target.value as Day})}
-              >
-                {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
-              </select>
+          <div className="space-y-1">
+            <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Select Day</label>
+            <div className="flex flex-wrap gap-2">
+              {DAYS.map(d => (
+                <button
+                  key={d}
+                  onClick={() => setFormData({...formData, day: d as Day})}
+                  className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
+                    formData.day === d ? 'bg-slate-800 text-white shadow-lg' : 'bg-white/30 text-slate-500 hover:bg-white/50'
+                  }`}
+                >
+                  {d}
+                </button>
+              ))}
             </div>
-            <div className="space-y-1">
-              <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Slot</label>
-              <select 
-                className="w-full liquid-card bg-white/20 p-4 rounded-xl md:rounded-2xl outline-none text-slate-800"
-                value={formData.timeSlot}
-                onChange={(e) => setFormData({...formData, timeSlot: e.target.value as TimeSlot})}
-              >
-                {TIMESLOTS.map(ts => <option key={ts} value={ts}>{ts}</option>)}
-              </select>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest px-2">Select Periods (Multiple allowed)</label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              {TIMESLOTS.map(ts => (
+                <button
+                  key={ts}
+                  onClick={() => toggleSlot(ts as TimeSlot)}
+                  className={`px-3 py-3 rounded-xl text-[9px] font-black uppercase tracking-tighter transition-all flex flex-col items-center ${
+                    formData.timeSlots?.includes(ts as TimeSlot) ? 'bg-slate-800 text-white shadow-lg' : 'bg-white/30 text-slate-500 hover:bg-white/50'
+                  }`}
+                >
+                  <span>{ts}</span>
+                  <span className="text-[7px] opacity-60 mt-1">{TIME_RANGES[ts]}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex justify-between items-center px-2">
+              <label className="text-[9px] md:text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-widest">Select Active Weeks</label>
+              <div className="flex gap-2">
+                <button onClick={() => setFormData({...formData, weeks: Array.from({length: 18}, (_,i)=>i+1)})} className="text-[7px] font-black uppercase tracking-widest text-blue-500">All</button>
+                <button onClick={() => setFormData({...formData, weeks: Array.from({length: 9}, (_,i)=>i+1)})} className="text-[7px] font-black uppercase tracking-widest text-blue-500">1-9</button>
+                <button onClick={() => setFormData({...formData, weeks: Array.from({length: 9}, (_,i)=>i+10)})} className="text-[7px] font-black uppercase tracking-widest text-blue-500">10-18</button>
+              </div>
+            </div>
+            <div className="grid grid-cols-6 md:grid-cols-9 gap-1.5 p-3 rounded-2xl bg-white/10">
+              {Array.from({ length: 18 }, (_, i) => i + 1).map(w => (
+                <button
+                  key={w}
+                  onClick={() => toggleWeek(w)}
+                  className={`w-full aspect-square rounded-lg flex items-center justify-center text-[10px] font-black transition-all ${
+                    formData.weeks?.includes(w) ? 'bg-slate-800 text-white scale-105 shadow-md' : 'bg-white/30 text-slate-400'
+                  }`}
+                >
+                  {w}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -325,7 +395,7 @@ const App: React.FC = () => {
     setIsAiLoading(true);
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const prompt = `Act as a university academic advisor. Goal: "${aiGoal}". Suggest 8 courses (Monday-Friday, 4 periods/day). Return JSON.`;
+      const prompt = `Act as a university academic advisor. Goal: "${aiGoal}". Suggest 8 courses (Monday-Friday, up to 4 periods/day). Return JSON. Ensure each course has a 'timeSlots' array (e.g. ['1st Period', '2nd Period']).`;
       const response = await ai.models.generateContent({
         model: 'gemini-3-pro-preview',
         contents: prompt,
@@ -342,11 +412,11 @@ const App: React.FC = () => {
                 instructor: { type: Type.STRING },
                 room: { type: Type.STRING },
                 day: { type: Type.STRING, enum: [...DAYS] },
-                timeSlot: { type: Type.STRING, enum: [...TIMESLOTS] },
+                timeSlots: { type: Type.ARRAY, items: { type: Type.STRING, enum: [...TIMESLOTS] } },
                 color: { type: Type.STRING },
                 weeks: { type: Type.ARRAY, items: { type: Type.INTEGER } },
               },
-              required: ['id', 'name', 'instructor', 'room', 'day', 'timeSlot', 'color', 'weeks'],
+              required: ['id', 'name', 'instructor', 'room', 'day', 'timeSlots', 'color', 'weeks'],
             },
           },
         },
@@ -357,7 +427,7 @@ const App: React.FC = () => {
   };
 
   const getCourseForSlot = (day: Day, slot: TimeSlot) => 
-    courses.find(c => c.day === day && c.timeSlot === slot && c.weeks.includes(currentWeek));
+    courses.find(c => c.day === day && c.timeSlots.includes(slot) && c.weeks.includes(currentWeek));
 
   const calculateDate = (dayOffset: number, week: number) => {
     const d = new Date(SEMESTER_START_DATE);

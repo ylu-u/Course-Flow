@@ -9,7 +9,7 @@ export interface Course {
   instructor: string;
   room: string;
   day: Day;
-  timeSlot: TimeSlot;
+  timeSlots: TimeSlot[]; // Changed from timeSlot to timeSlots array
   color: string;
   weeks: number[]; // Array of week numbers this course is active (1-18)
 }
